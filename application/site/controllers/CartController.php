@@ -4,10 +4,11 @@ namespace site\controllers;
 
 use app\models\Cart;
 use app\models\Product;
+use site\models\forms\OrderForm;
 
 class CartController extends \site\base\Controller {
     public function actionIndex() {
-        return $this->render('/cart', ['cart' => new Cart()]);
+        return $this->render('cart', ['cart' => new Cart()]);
     }
 
     public function actionAdd($productId, $quantity) {
@@ -68,5 +69,19 @@ class CartController extends \site\base\Controller {
             'status' => 'error',
             'message' => 'Product not found'
         ];
+    }
+
+    public function actionOrder(){
+        $cart = new Cart();
+        $model = new OrderForm();
+        
+        if(\Yii::$app->request->isPost){
+            $model->load(\Yii::$app->request->post());
+            if($model->run()){
+                return $this->goHome();
+            }
+        }
+
+        return $this->render('order', ['cart'=>$cart, 'model'=>$model]);
     }
 }

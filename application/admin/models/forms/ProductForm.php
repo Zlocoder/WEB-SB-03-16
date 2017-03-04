@@ -1,46 +1,44 @@
 <?php
 
+
 namespace admin\models\forms;
 
 use app\models\Product;
 use app\models\Category;
 
-class ProductForm extends \yii\base\Model {
+class ProductForm extends \yii\base\Model
+{
     public $id;
     public $name;
     public $categoryId;
-    public $categories;
     public $price;
     public $description;
     public $image;
     public $deleteImage;
+    public $categories;
 
-
-    public function rules() {
+    public function rules()
+    {
         return [
-            [['name', 'categoryId', 'price'], 'required', 'on' => ['create', 'update']],
-            ['name', 'string', 'min' => 4, 'max' => 100, 'on' => ['create', 'update']],
-            ['categoryId', 'exist', 'targetClass' => Category::className(), 'targetAttribute' => 'id', 'on' => ['create', 'update']],
-            ['price', 'double', 'on' => ['create', 'update']],
-            ['description', 'safe', 'on' => ['create', 'update']],
-            ['image', 'image', 'mimeTypes' => 'image/jpg, image/png, image/jpeg', 'maxSize' => '100500000', 'maxFiles' => 1, 'on' => ['create', 'update']],
-
+            ['name', 'required', 'on' => ['create', 'update']],
+            ['name', 'string', 'length' => [4, 24], 'on' => ['create', 'update']],
+            ['categoryId', 'integer', 'on' => ['create', 'update']],
+            ['price', 'number', 'on' => ['create', 'update']],
+            ['image', 'image', 'mimeTypes' => 'image/jpg, image/png, image/jpeg', 'maxSize' => '100500000',
+                'maxFiles' => 1, 'on' => ['create', 'update']],
             ['categories', 'each', 'rule' => ['exist', 'targetClass' => Category::className(), 'targetAttribute' => 'id', 'on' => ['create', 'update']]],
-
-            ['name', 'unique', 'targetClass' => Product::className(), 'on' => ['create']],
-
-            ['name', 'unique', 'targetClass' => Product::className(), 'filter' => ['!=', 'id', $this->id], 'on' => ['update']],
+            ['description', 'string', 'on' => ['create', 'update']],
             ['deleteImage', 'boolean']
         ];
     }
 
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'name' => 'Name',
-            'categoryId' => 'Default category',
-            'categories' => 'Additional categories',
+            'categoryId' => 'Category Id',
             'price' => 'Price',
-            'description' => 'Description',
+            'description' => 'Description'
         ];
     }
 
@@ -90,4 +88,5 @@ class ProductForm extends \yii\base\Model {
 
         return false;
     }
+
 }

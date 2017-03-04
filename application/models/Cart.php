@@ -22,7 +22,6 @@ class Cart extends \yii\base\Component
             $products_ids = array_keys($this->_products);
             $this->_productsCache = Product::find()->andWhere(['id' => $products_ids])->all();
         }
-
         return $this->_productsCache;
     }
 

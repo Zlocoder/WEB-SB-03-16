@@ -1,8 +1,14 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: миша
+ * Date: 07.02.2017
+ * Time: 20:46
+ */
 
 namespace app\models;
 
-use yii\web\IdentityInterface;
+
 
 class Admin extends \app\base\ActiveRecord implements \yii\web\IdentityInterface {
     public static function tableName() {
@@ -13,15 +19,14 @@ class Admin extends \app\base\ActiveRecord implements \yii\web\IdentityInterface
         return [
             [['login', 'password'], 'required'],
             ['login', 'string', 'max' => 100, 'min' => 3],
-            ['password', 'string', 'max' => 100],
+            ['password', 'string', 'min' => 60, 'max' => 60],
+            ['login', 'unique'],
+            [['createdAt', 'updatedAt'], 'safe']
         ];
     }
 
     public function attributeLabels() {
-        return [
-            'createdAt' => 'Date created',
-            'updatedAt' => 'Date updated'
-        ];
+
     }
 
     public static function findIdentity($id)

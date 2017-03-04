@@ -3,12 +3,13 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 ?>
-<h1>Products <a href="<?= Url::to(['product/create']) ?>" class="btn btn-default pull-right">Create Product</a></h1>
+
+<h1>Products <a href="<?= Url::to(['product/create'])?>" class="btn btn-default pull-right">create product</a></h1>
 
 <?= \yii\grid\GridView::widget([
-    'dataProvider' => $provider,
-    'filterModel' => $filter,
-    'columns' => [
+    'dataProvider'=>$provider,
+    'filterModel'=>$filter,
+    'columns'=> [
         'id',
         [
             'attribute' => 'image',
@@ -19,15 +20,16 @@ use yii\helpers\Html;
         ],
         'name',
         [
-            'attribute' => 'category',
+            'attribute' => 'categoryId',
             'filter' => $dropDownCategories,
             'filterInputOptions' => [
                 'class' => 'form-control',
                 'encode' => false
             ],
-            'value' => 'category.name'
+            'value'=> 'category.name'
         ],
         'price',
+        'description',
         'createdAt',
         'updatedAt',
         [

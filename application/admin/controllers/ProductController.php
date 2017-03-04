@@ -1,36 +1,44 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: миша
+ * Date: 30.01.2017
+ * Time: 11:30
+ */
 
 namespace admin\controllers;
 
-use app\models\Category;
-use app\models\Product;
 use admin\models\forms\ProductForm;
+use app\models\Product;
+use app\models\Category;
 use admin\models\filters\ProductFilter;
 
-class ProductController extends \admin\base\Controller {
 
-    public function actionIndex() {
+
+class ProductController extends \admin\base\Controller
+{
+    public function actionIndex(){
         $filter = new ProductFilter();
         $filter->load(\Yii::$app->request->get());
-
-        return $this->render('list', [
-            'filter' => $filter,
-            'provider' => $filter->provider,
-            'dropDownCategories' => Category::getDropDownCategories()
+        
+        
+        return $this->render('list',[
+            'filter'=>$filter,
+            'provider'=>$filter->provider,
+            'dropDownCategories'=> Category::getDropDownCategories()
         ]);
     }
 
-    public function actionCreate() {
+    public function actionCreate(){
         $model = new ProductForm([
             'scenario' => 'create'
         ]);
-
-        if (\Yii::$app->request->isPost) {
-
+        
+        if(\Yii::$app->request->isPost){
             $model->load(\Yii::$app->request->post());
             $model->image = \yii\web\UploadedFile::getInstance($model, 'image');
 
-            if ($model->run()) {
+            if($model->run()){
                 return $this->redirect(['product/index']);
             }
         }
@@ -43,6 +51,7 @@ class ProductController extends \admin\base\Controller {
 
     public function actionUpdate($id) {
         if ($product = Product::findOne($id)) {
+
             $categories = $product->categories;
             array_walk($categories, function(&$element) {
                 $element = $element->id;
@@ -77,11 +86,12 @@ class ProductController extends \admin\base\Controller {
         ]);
     }
 
-    public function actionDelete($id) {
-        if ($product = Product::findOne($id)) {
-            $product->delete();
-        };
+    public function actionDelete($id){
 
+        if($product = Product::findOne($id)){
+            $product->delete();
+        }
+       
         return $this->redirect(['product/index']);
     }
 }

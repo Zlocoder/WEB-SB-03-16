@@ -1,30 +1,21 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: миша
+ * Date: 23.01.2017
+ * Time: 10:32
+ */
 
 namespace admin\controllers;
 
-use app\models\Category;
 use admin\models\forms\CategoryForm;
+use app\models\Category;
 use admin\models\filters\CategoryFilter;
 
-class CategoryController extends \admin\base\Controller {
-    /*
-    public function actionOne() {
 
-        $categories = Category::find()->with('parent p')->all();
-
-        $parent = $categories[0]->parent;
-
-
-        return $this->render('form');
-    }
-    public function actionMassCreate() {
-        for ($i = 3; $i <= 20; $i++) {
-            (new Category(['name' => "Category $i"]))->save();
-        }
-    }
-    */
-
-    public function actionIndex() {
+class CategoryController extends \admin\base\Controller
+{
+    public function actionIndex(){
         $filter = new CategoryFilter();
         $filter->load(\Yii::$app->request->get());
 
@@ -35,7 +26,7 @@ class CategoryController extends \admin\base\Controller {
         ]);
     }
 
-    public function actionCreate() {
+    public function actionCreate(){
         $model = new CategoryForm([
             'scenario' => 'create'
         ]);
@@ -54,7 +45,7 @@ class CategoryController extends \admin\base\Controller {
         ]);
     }
 
-    public function actionUpdate($id) {
+    public function actionUpdate($id){
         if ($category = Category::findOne($id)) {
             $model = new CategoryForm([
                 'scenario' => 'update',
@@ -80,7 +71,7 @@ class CategoryController extends \admin\base\Controller {
         ]);
     }
 
-    public function actionDelete($id) {
+    public function actionDelete($id){
         Category::deleteAll(['id' => explode(',', $id)]);
 
         return $this->redirect(['category/index']);

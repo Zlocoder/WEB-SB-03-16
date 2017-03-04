@@ -1,11 +1,17 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: миша
+ * Date: 13.02.2017
+ * Time: 8:51
+ */
 
 namespace app\models;
 
-use app\base\ActiveRecord;
+
 use yii\web\IdentityInterface;
 
-class User extends ActiveRecord implements \yii\web\IdentityInterface
+class User extends \app\base\ActiveRecord implements \yii\web\IdentityInterface
 {
     public static function tableName()
     {
@@ -17,7 +23,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         return [
             [['login', 'password'], 'required'],
             ['login', 'string', 'max' => 100, 'min' => 3],
-            ['password', 'string', 'max' => 60],
+            ['password', 'string', 'min' => 60, 'max' => 60]
         ];
     }
 

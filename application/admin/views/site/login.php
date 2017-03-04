@@ -28,9 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($model, 'password')->passwordInput() ?>
 
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary pull-right">Save</button>
-        </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary pull-right">Save</button>
+    </div>
 
     <?php ActiveForm::end(); ?>
+
 </div>
