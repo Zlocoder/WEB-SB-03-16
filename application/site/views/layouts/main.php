@@ -31,20 +31,18 @@ AppAsset::register($this);
 
                 <div id="header_right">
                     <p>
-                        <a href="<?= Url::to(['cart/index']) ?>">My Cart</a> |
+                        <a href="#">My Wishlist</a> |
+                        <a href="#" id="colProduct">My Cart</a> |
                         <a href="#">Checkout</a> |
-                        <?php if (\Yii::$app->user->isGuest) { ?>
-                            <a href="<?= Url::to(['site/login']) ?>">Log In</a>  |
-                            <a href="#">Registration</a>
-                        <?php } else { ?>
-                            <a href="#">My Account (<?= \Yii::$app->user->identity->login ?>)</a> |
-                            <a href="#">My Wishlist</a> |
+                        <?php if(\Yii::$app->user->isGuest){?>
+                            <a href="<?= Url::to(['site/login'])?>">Log In</a></p>
+                        <?php }else{ ?>
+                            <a href="#">My Account (<?= \Yii::$app->user->identity->login ?>)</a>
                             <a href="<?= Url::to(['site/logout']) ?>">Logout</a>
                         <?php } ?>
-                    </p>
-
                     <p>
-                        Shopping Cart: <strong id="cart-count"><?= $this->params['cartQuantity'] ?> items</strong> ( <a href="<?= Url::to(['cart/index']) ?>">Show Cart</a> )
+                        Shopping Cart: <strong id="cart-count"><?= $this->params['cartQuantity'] ?>
+                            items</strong> ( <a href="<?= Url::to(['cart/index']) ?>">Show Cart</a> )
                     </p>
                 </div>
                 <div class="cleaner"></div>
@@ -53,26 +51,26 @@ AppAsset::register($this);
             <div id="templatemo_menubar">
                 <div id="top_nav" class="ddsmoothmenu">
                     <ul>
-                        <li><a href="#" class="selected">Home</a></li>
-                        <li><a href="<?= \yii\helpers\Url::to(['catalog/products'])?>">Products</a>
+                        <li><a href="<?=Yii::$app->homeUrl?>" class="selected">Home</a></li>
+                        <li><a href="<?=Url::to(['site/products'])?>">Products</a>
                             <ul>
-                                <li><a href="#">Sub menu 1</a></li>
-                                <li><a href="#">Sub menu 2</a></li>
-                                <li><a href="#">Sub menu 3</a></li>
-                                <li><a href="#">Sub menu 4</a></li>
-                                <li><a href="#5">Sub menu 5</a></li>
+                                <li><a href="#submenu1">Sub menu 1</a></li>
+                                <li><a href="#submenu2">Sub menu 2</a></li>
+                                <li><a href="#submenu3">Sub menu 3</a></li>
+                                <li><a href="#submenu4">Sub menu 4</a></li>
+                                <li><a href="#submenu5">Sub menu 5</a></li>
                             </ul>
                         </li>
-                        <li><a href="#">About</a>
+                        <li><a href="about.html">About</a>
                             <ul>
                                 <li><a href="#submenu1">Sub menu 1</a></li>
                                 <li><a href="#submenu2">Sub menu 2</a></li>
                                 <li><a href="#submenu3">Sub menu 3</a></li>
                             </ul>
                         </li>
-                        <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Checkout</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="faqs.html">FAQs</a></li>
+                        <li><a href="checkout.html">Checkout</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
                     </ul>
                     <br style="clear: left" />
                 </div>
@@ -93,7 +91,7 @@ AppAsset::register($this);
                             <div class="content">
                                 <ul class="sidebar_list">
                                     <?php foreach ($this->params['asideCategories'] as $category) { ?>
-                                        <li><a href="<?= \yii\helpers\Url::to(['catalog/products', 'category' => $category->id]) ?>"><?= $category->name ?></a></li>
+                                        <li><a href="<?= Url::to(['site/products'])?>?id=<?= $category->id?>"><?= $category->name ?></a></li>
                                     <?php } ?>
                                 </ul>
                             </div>

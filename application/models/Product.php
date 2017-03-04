@@ -1,60 +1,78 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: миша
+ * Date: 30.01.2017
+ * Time: 12:06
+ */
 
 namespace app\models;
 
 use app\models\Category;
 use yii\imagine\Image;
 
-class Product extends \app\base\ActiveRecord {
-    private static $sizes = [
-        [50, 50],
-        [100, 100],
-        [200, 200],
-    ];
-
-    public static function tableName() {
+class Product extends \app\base\ActiveRecord
+{
+    public static function tableName(){
         return 'product';
     }
 
-    public function rules() {
-        return [
-            [['name', 'categoryId', 'price'], 'required'],
-            ['name', 'string', 'min' => 3, 'max' => 100],
-            ['name', 'unique'],
-            ['categoryId', 'integer'],
-            ['categoryId', 'exist', 'targetClass' => Category::className(), 'targetAttribute' => 'id'],
-            ['price', 'double'],
-            ['image', 'string', 'min' => 16, 'max' => 16],
+    private static $sizes = [
+        [50,50],
+        [100,100],
+        [200,200]
+    ];
 
-            [['description', 'createAt', 'updatedAt'], 'safe']
+    public function rules()
+    {
+        return [
+            ['name', 'required'],
+            ['name', 'string', 'min'=>4, 'max'=>100],
+            ['categoryId', 'exist', 'targetClass'=> Category::className(), 'targetAttribute' => 'id'],
+            ['price', 'number'],
+            ['image', 'string', 'min'=>16, 'max'=>16],
+            ['description', 'string', 'min'=>10],
+            [['createdAt', 'updatedAt'], 'safe']
         ];
     }
 
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'name' => 'Name',
+            'categoryId' => 'CategoryName',
             'price' => 'Price',
             'description' => 'Description',
-            'categoryId' => 'Category',
             'createdAt' => 'Date created',
             'updatedAt' => 'Date updated'
         ];
     }
-
-    public function getCategory() {
+    
+    public function getCategory(){
         return $this->hasOne(Category::className(), ['id' => 'categoryId']);
     }
-
-    /*
-    public function getProductsToCategory() {
-        return $this->hasMany('app\models\ProductToCategory', ['productId' => 'id']);
+    
+    public function getCategories(){
+        return $this->hasMany(Category::className(), ['id'=>'categoryId'])
+                ->viaTable('product_to_category', ['productId'=>'id']);
     }
-    */
 
-    public function getCategories() {
-        return $this->hasMany(Category::className(), ['id' => 'categoryId'])
-            //->via('productsToCategory', ['productId' => 'id'])
-            ->viaTable('product_to_category', ['productId' => 'id']);
+    public function assignCategories($ids = []){
+        if($this->id){
+            \Yii::$app->db->createCommand()->delete('product_to_category', ['productId' => $this->id])->execute();
+
+            array_unshift($ids, $this->categoryId);
+            array_unique($ids);
+            array_walk($ids, function (&$id){
+               $id = [$this->id, $id];
+            });
+
+            \Yii::$app->db->createCommand()->batchInsert(
+                'product_to_category',
+                ['productId', 'categoryId'],
+                $ids
+            )->execute();
+        }
     }
 
     public function getImageUrl($size = null) {
@@ -103,45 +121,16 @@ class Product extends \app\base\ActiveRecord {
         unlink("{$path}{$this->image}.tmp");
     }
 
-    public function assignCategories($ids = []) {
-        if ($this->id) {
-            \Yii::$app->db->createCommand()->delete('product_to_category', ['productId' => $this->id])->execute();
-
-            array_unshift($ids, $this->categoryId);
-            $ids = array_unique($ids);
-            array_walk($ids, function(&$id) {
-                $id = [$this->id, $id];
-            });
-
-            \Yii::$app->db->createCommand()->batchInsert(
-                'product_to_category',
-                ['productId', 'categoryId'],
-                $ids
-            )->execute();
-        }
-    }
-
-    public function beforeDelete() {
-        if (parent::beforeDelete()) {
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()){
             $this->deleteImage();
+            return true;
 
             \Yii::$app->db->createCommand()->delete('product_to_category', ['productId' => $this->id])->execute();
-
-            return true;
         }
-
         return false;
     }
+
 }
 
-/*
-$product = new Product();
-$product->attachBehavior('timestamp', [
-    'class' => 'yii\behaviors\TimestampBehavior',
-    'createdAtAttribute' => 'createdAt',
-    'updatedAtAttribute' => 'updatedAt',
-    'value' => new \yii\db\Expression('NOW()')
-]);
-
-$product->save();
-*/

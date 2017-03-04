@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: миша
+ * Date: 09.02.2017
+ * Time: 10:51
+ */
 
 namespace admin\models\filters;
 
@@ -6,43 +12,35 @@ use app\models\User;
 
 class UserFilter extends \yii\base\Model
 {
-    public $id;
-    public $login;
-    public $password;
+    public  $id;
+    public  $login;
 
     public function rules()
     {
         return [
-            [['login', 'password'], 'required'],
-            ['login', 'string', 'max' => 100, 'min' => 3],
-            ['password', 'string', 'max' => 100],
+            ['id', 'integer'],
+            ['login', 'string']
         ];
     }
 
-    public function getProvider()
-    {
+    public function getProvider(){
+        $this->validate();
+        
         $query = User::find();
+        
+        if($this->id and !$this->hasErrors('id')){
+            $query->andWhere(['id'=>$this->id]);
+        }
 
-        if ($this->id && !$this->hasErrors('id'))
-            $query->andWhere(['id' => $this->id]);
-
-        if ($this->login && !$this->hasErrors('login'))
-            $query->andWhere(['login' => $this->login]);
-
-        if ($this->password && !$this->hasErrors('password'))
-            $query->andWhere(['password' => $this->password]);
+        if($this->login and !$this->hasErrors('login')){
+            $query->andWhere(['LIKE', 'login', $this->login]);
+        }
 
         return new \yii\data\ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 3,
-                'pageSizeParam' => false,
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'createdAt' => SORT_DESC,
-                    'login' => SORT_ASC
-                ]
+                'pageSize' => 5,
+                'pageSizeParam' => false
             ]
         ]);
 

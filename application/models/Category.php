@@ -1,14 +1,22 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: миша
+ * Date: 23.01.2017
+ * Time: 20:49
+ */
 
 namespace app\models;
 
 use app\models\Product;
 
-class Category extends \app\base\ActiveRecord {
-    public static function tableName() {
+class Category extends \app\base\ActiveRecord
+{
+    public static function tableName()
+    {
         return 'category';
     }
-
+    
     public function rules() {
         return [
             [['name'], 'required'],
@@ -23,7 +31,7 @@ class Category extends \app\base\ActiveRecord {
     public function attributeLabels() {
         return [
             'name' => 'Name',
-            'parentId' => 'Parent category',
+            'parentId' => 'Parent Category',
             'createdAt' => 'Date created',
             'updatedAt' => 'Date updated'
         ];
@@ -74,6 +82,7 @@ class Category extends \app\base\ActiveRecord {
 
             return \yii\helpers\ArrayHelper::map($query->asArray()->all(), 'id', 'name');
         }
+        
     }
 
     public function getParent() {
@@ -84,20 +93,8 @@ class Category extends \app\base\ActiveRecord {
         return $this->hasMany(self::className(), ['parentId' => 'id']);
     }
 
-    public function getProducts() {
-        return $this->hasMany(Product::className(), ['id' => 'productId'])
-            ->viaTable('product_to_category', ['categoryId' => 'id']);
+    public function getProducts(){
+        return $this->hasMany(Product::className(), ['categoryId' => 'id']);
     }
+
 }
-
-/*
-$category = Category::findOne(22);
-var_dump($category->getParent()); // ActiveQuery
-var_dump($category->parent); // Category
-*/
-
-/*
-Category::find()->where(['id' => 22])->with('parent.children')->one()
-parent.name
-children.name
-*/

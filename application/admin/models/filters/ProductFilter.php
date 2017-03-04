@@ -1,43 +1,52 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: миша
+ * Date: 31.01.2017
+ * Time: 9:19
+ */
 
 namespace admin\models\filters;
 
 use app\models\Product;
 
-class ProductFilter extends \yii\base\Model {
+class ProductFilter extends \yii\base\Model
+{
     public $id;
     public $name;
-    public $category;
+    public $categoryId;
     public $price;
+    public $description;
 
-    public function rules() {
+    public function rules()
+    {
         return [
             ['id', 'integer'],
-            ['category', 'integer'],
-            ['name', 'string', 'max' => 100],
-            ['price', 'double']
+            ['name', 'string', 'max'=>100],
+            ['categoryId', 'integer'],
+            ['description', 'string']
         ];
     }
 
-    public function getProvider() {
+    public function getProvider(){
         $this->validate();
 
         $query = Product::find()->with('category');
-
-        if ($this->id && !$this->hasErrors('id')) {
-            $query->andWhere(['id' => $this->id]);
+        
+        if($this->id && !$this->hasErrors('id')){
+            $query->andWhere(['id'=>$this->id]);
         }
 
-        if ($this->name && !$this->hasErrors('name')) {
+        if($this->name && !$this->hasErrors('name')){
             $query->andWhere(['LIKE', 'name', $this->name]);
         }
 
-        if ($this->category && !$this->hasErrors('category')) {
-            $query->andWhere(['categoryId' => $this->category]);
+        if($this->description && !$this->hasErrors('description')){
+            $query->andWhere(['LIKE', 'description', $this->description]);
         }
 
-        if ($this->price && !$this->hasErrors('price')) {
-            $query->andWhere(['price' => $this->price]);
+        if($this->categoryId && !$this->hasErrors('categoryId')){
+            $query->andWhere(['categoryId' => $this->categoryId]);
         }
 
         return new \yii\data\ActiveDataProvider([
@@ -46,16 +55,14 @@ class ProductFilter extends \yii\base\Model {
                 'pageSize' => 5,
                 'pageSizeParam' => false
             ],
-            'sort' => [
+            'sort'=> [
                 'attributes' => [
-                    'name',
-                    'category' => [
-                        'asc' => ['categoryId' => SORT_ASC],
-                        'desc' => ['categoryId' => SORT_DESC]
+                    'createdAt' => [
+                        'default' => SORT_DESC
                     ],
-                    'price',
-                    'createdAt',
-                    'updatedAt'
+                    'name' => [
+                        'default' => SORT_ASC
+                    ]
                 ],
                 'defaultOrder' => [
                     'createdAt' => SORT_DESC,
@@ -64,6 +71,4 @@ class ProductFilter extends \yii\base\Model {
             ]
         ]);
     }
-
-
 }

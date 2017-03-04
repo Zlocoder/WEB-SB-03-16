@@ -7,6 +7,15 @@ use admin\models\forms\AdminLogin;
 
 class SiteController extends \admin\base\Controller
 {
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ]
+        ];
+    }
+
     /*
     public function actionCreateAdmin() {
         $admin = new \app\models\Admin;
@@ -23,8 +32,8 @@ class SiteController extends \admin\base\Controller
 
     public function actionLogin()
     {
-        if (!\Yii::$app->admin->isGuest) {
-            return $this->goDashboard();
+        if (!Yii::$app->admin->isGuest) {
+            return $this->goHome();
         }
 
         $model = new AdminLogin();
@@ -33,7 +42,7 @@ class SiteController extends \admin\base\Controller
             $model->load(Yii::$app->request->post());
 
             if ($model->run()) {
-                return $this->goDashboard();
+                return $this->goHome();
             }
         }
 

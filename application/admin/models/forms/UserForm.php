@@ -1,11 +1,17 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: миша
+ * Date: 12.02.2017
+ * Time: 19:39
+ */
 
 namespace admin\models\forms;
 
-use \yii\base\Model;
 use app\models\User;
 
-class UserForm extends Model
+
+class UserForm extends \yii\base\Model
 {
     public $id;
     public $login;
@@ -16,27 +22,25 @@ class UserForm extends Model
         return [
             [['login', 'password'], 'required', 'on' => ['create', 'update']],
             ['login', 'string', 'max' => 100, 'min' => 3, 'on' => ['create', 'update']],
-            ['login', 'unique', 'targetClass' => User::className(), 'on' => ['create']],
-            ['password', 'string', 'max' => 100, 'on' => ['create', 'update']],
+            ['password', 'string', 'max' => 100, 'on' => ['create', 'update']]
         ];
     }
 
-    public function run()
-    {
-        if ($this->validate()) {
-            switch ($this->scenario) {
+    public function run(){
+        if($this->validate()){
+            switch ($this->scenario){
                 case 'create':
-                    $user = new User([
+                    $admin = new User([
                         'login' => $this->login,
                         'password' => \Yii::$app->security->generatePasswordHash($this->password)
                     ]);
-                    return $user->save();
+                    return $admin->save();
                 case 'update':
-                    if ($this->id && $user = User::findOne($this->id)) {
-                        $user->login = $this->login;
-                        $user->password = \Yii::$app->security->generatePasswordHash($this->password);
-                        return $user->save();
+                    if ($this->id and $admin = User::findOne(['id'=>$this->id])) {
+                        $admin->login = $this->login;
+                        $admin->password = \Yii::$app->security->generatePasswordHash($this->password);
                     }
+                    return $admin->save();
             }
         }
         return false;

@@ -10,11 +10,10 @@ class CategoryForm extends \yii\base\Model
     public $name;
     public $parentId;
 
-    public function rules()
-    {
+    public function rules(){
         return [
             [['name'], 'required', 'on' => ['create', 'update']],
-            ['name', 'string', 'min' => 4, 'max' => 100, 'on' => ['create', 'update']],
+            ['name', 'string', 'min'=>4, 'max'=>100, 'on' => ['create', 'update']],
             ['name', 'unique', 'targetClass' => Category::className(), 'on' => ['create']],
             ['name', 'unique', 'targetClass' => Category::className(), 'filter' => ['!=', 'id', $this->id], 'on' => ['update']],
             ['parentId', 'exist', 'targetClass' => Category::className(), 'targetAttribute' => 'id', 'on' => ['create', 'update']]
@@ -29,8 +28,7 @@ class CategoryForm extends \yii\base\Model
         ];
     }
 
-    public function run()
-    {
+    public function run() {
         if ($this->validate()) {
             switch ($this->scenario) {
                 case 'create' :
@@ -50,4 +48,5 @@ class CategoryForm extends \yii\base\Model
 
         return false;
     }
+    
 }

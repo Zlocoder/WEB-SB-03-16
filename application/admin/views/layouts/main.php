@@ -28,28 +28,22 @@ AppAsset::register($this);
     <?php
     NavBar::begin([
         'brandLabel' => 'My Company',
-        'brandUrl' => ['site/index'],
+        'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-default',
         ],
     ]);
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
-        'items' => [
-            ['label' => 'Categories', 'url' => ['category/index']],
-            ['label' => 'Products', 'url' => ['product/index']],
-            ['label' => 'Users', 'url' => ['user/index']],
-        ]
-    ]);
-
-    echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
+            ['label' => 'Category', 'url' => ['category/index']],
+            ['label' => 'Product', 'url' => ['product/index']],
+            ['label' => 'User', 'url' => ['admin/index']],
             Yii::$app->admin->isGuest ? (
-            ['label' => 'Login', 'url' => ['site/login']]
+                ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
                 '<li>'
-                . Html::beginForm(['site/logout'], 'post')
+                . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
                     'Logout (' . Yii::$app->admin->identity->login . ')',
                     ['class' => 'btn btn-link logout']
@@ -57,18 +51,15 @@ AppAsset::register($this);
                 . Html::endForm()
                 . '</li>'
             )
-        ]
+        ],
     ]);
     NavBar::end();
     ?>
 
     <div class="container">
-        <div class="row">
-            <?= Breadcrumbs::widget([
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            ]) ?>
-        </div>
-
+        <?= Breadcrumbs::widget([
+            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
         <?= $content ?>
     </div>
 </div>

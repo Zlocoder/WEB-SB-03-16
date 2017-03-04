@@ -2,8 +2,11 @@
 
 namespace app\base;
 
-class ActiveRecord extends \yii\db\ActiveRecord {
-    public function init() {
+
+class ActiveRecord extends \yii\db\ActiveRecord
+{
+    public function init()
+    {
         $this->attachBehavior('timestamp', [
             'class' => 'yii\behaviors\TimestampBehavior',
             'createdAtAttribute' => 'createdAt',
