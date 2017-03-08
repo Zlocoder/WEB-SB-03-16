@@ -76,8 +76,8 @@ AppAsset::register($this);
                 </div>
 
                 <div id="templatemo_search">
-                    <form action="#" method="get">
-                        <input type="text" value=" " name="keyword" id="keyword" title="keyword" onfocus="clearText(this)" onblur="clearText(this)" class="txt_field" />
+                    <form action="<?= Url::to(['site/search'])?>" method="get">
+                        <input type="text"  name="keyword" id="keyword" title="keyword"  class="txt_field" />
                         <input type="submit" name="Search" value=" " alt="Search" id="searchbutton" title="Search" class="sub_btn"  />
                     </form>
                 </div>
