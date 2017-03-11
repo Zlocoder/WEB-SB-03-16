@@ -16,6 +16,7 @@ class ProductForm extends \yii\base\Model
     public $image;
     public $deleteImage;
     public $categories;
+    public $bestseller;
 
     public function rules()
     {
@@ -28,7 +29,8 @@ class ProductForm extends \yii\base\Model
                 'maxFiles' => 1, 'on' => ['create', 'update']],
             ['categories', 'each', 'rule' => ['exist', 'targetClass' => Category::className(), 'targetAttribute' => 'id', 'on' => ['create', 'update']]],
             ['description', 'string', 'on' => ['create', 'update']],
-            ['deleteImage', 'boolean']
+            ['deleteImage', 'boolean'],
+            ['bestseller', 'boolean']
         ];
     }
 
@@ -38,7 +40,8 @@ class ProductForm extends \yii\base\Model
             'name' => 'Name',
             'categoryId' => 'Category Id',
             'price' => 'Price',
-            'description' => 'Description'
+            'description' => 'Description',
+            'bestseller' => 'Bestseller'
         ];
     }
 
@@ -50,7 +53,8 @@ class ProductForm extends \yii\base\Model
                         'name' => $this->name,
                         'categoryId' => $this->categoryId,
                         'price' => $this->price,
-                        'description' => $this->description
+                        'description' => $this->description,
+                        'bestseller' => $this->bestseller
                     ]);
 
                     if ($this->image) {
@@ -69,12 +73,15 @@ class ProductForm extends \yii\base\Model
                         $product->categoryId = $this->categoryId;
                         $product->price = $this->price;
                         $product->description = $this->description;
+                        $product->bestseller = $this->bestseller;
 
                         if ($this->image) {
                             $product->uploadImage($this->image);
                         } else if ($this->deleteImage) {
                             $product->deleteImage();
                         }
+
+
 
                         if ($product->save()) {
                             $product->assignCategories($this->categories ?: []);

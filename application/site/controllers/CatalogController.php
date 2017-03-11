@@ -28,7 +28,10 @@ class CatalogController extends \site\base\Controller {
             'relateds' => Product::find()->limit(3)
                 ->orderBy('createdAt')
                 ->andWhere(['categoryId' => $product->categoryId])
-                ->andWhere(['id' => $productId])->all()
+                ->andFilterCompare('id', $productId, $defaultOperator = '<>')
+//                ->andWhere(['id' => $productId])
+                ->all()
+
         ]);
 
     }
