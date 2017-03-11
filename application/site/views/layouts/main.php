@@ -132,6 +132,8 @@ AppAsset::register($this);
     </div>
 
     <?php $this->endBody() ?>
+
+<div id="modals"></div>
 </body>
 </html>
 <?php $this->endPage() ?>

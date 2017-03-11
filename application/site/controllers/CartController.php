@@ -7,28 +7,22 @@ use app\models\Product;
 use site\models\forms\OrderForm;
 
 class CartController extends \site\base\Controller {
+    public $layout = false;
+
     public function actionIndex() {
         return $this->render('cart', ['cart' => new Cart()]);
     }
 
     public function actionAdd($productId, $quantity) {
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
-        if (Product::findOne($productId)) {
+        if ($product = Product::findOne($productId)) {
             $cart = new Cart();
             $cart->add($productId, $quantity);
-
-            return [
-                'status' => 'success',
-                'count' => $cart->getProductsCount(),
-                'cartTotal' => $cart->getProductsTotal()
-            ];
         }
 
-        return [
-            'status' => 'error',
-            'message' => 'Product not found'
-        ];
+        return $this->render('modal', [
+            'product' => $product,
+            'quantity' => $quantity
+        ]);
     }
 
     public function actionQuantity($productId, $quantity) {

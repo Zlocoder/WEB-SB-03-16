@@ -24,9 +24,10 @@ $(function() {
     $('a.addtocart').click(function(event) {
         $.ajax({
             url: $(this).attr('href'),
-            success: function(json) {
-                if (json.status == 'success') {
-                    $('#cart-count').text(json.count + ' items');
+            dataType: 'html',
+            success: function(html) {
+                if (html) {
+                    $('#modals').html(html);
                 }
             }
         });
