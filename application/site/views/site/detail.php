@@ -1,4 +1,7 @@
+<?php
 
+use \yii\helpers\Url;
+?>
 
 <div id="content" class="float_r">
     <h1>Product Detail</h1>

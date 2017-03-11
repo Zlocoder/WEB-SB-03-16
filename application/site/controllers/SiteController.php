@@ -61,4 +61,20 @@ class SiteController extends \site\base\Controller {
 
         return $this->goHome();
     }
+
+    public function actionSearch($keyword){
+        if(!empty($keyword)){
+            $models = Product::find()->andWhere(['LIKE', 'name', trim($keyword)]);
+            $pagination = new Pagination([
+                'defaultPageSize' => 6,
+                'totalCount' => $models->count()
+            ]);
+            return $this->render('products', [
+                'products' => $models->offset($pagination->offset)->limit($pagination->limit)->all(),
+                'pagination' => $pagination
+            ]);
+        }else{
+            return $this->redirect(['site/products']);
+        }
+    }
 }
