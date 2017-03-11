@@ -31,5 +31,31 @@ class CatalogController extends \site\base\Controller {
                 ->andWhere(['id' => $productId])->all()
         ]);
 
+    public function actionSearch($keyword, $autocomplete = false){
+        if(!empty($keyword)){
+            $models = Product::find()->andWhere(['LIKE', 'name', trim($keyword)]);
+
+            if ($autocomplete) {
+                $result = [];
+                foreach ($models->all() as $model) {
+                    $result[] = $model->name;
+                }
+
+                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+                return $result;
+            }
+
+            $pagination = new Pagination([
+                'defaultPageSize' => 6,
+                'totalCount' => $models->count()
+            ]);
+            return $this->render('products', [
+                'products' => $models->offset($pagination->offset)->limit($pagination->limit)->all(),
+                'pagination' => $pagination
+            ]);
+        }else{
+            return $this->redirect(['site/products']);
+        }
     }
 }
