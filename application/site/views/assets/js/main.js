@@ -65,6 +65,35 @@ $(function() {
                 }
             }
         });
-    })
+    });
+
+    $('#templatemo_search #keyword').keyup(function(e) {
+        var $input = $(this);
+        if ($input.data('old') != $input.val() && $input.val().length > 1) {
+            $.ajax({
+                url: $('#templatemo_search form').attr('action'),
+                method: 'get',
+                data: {
+                    keyword: $input.val(),
+                    autocomplete: 1
+                },
+                success: function(helpList) {
+                    if (helpList) {
+                        var $ul = $('#search_autocomplete ul');
+                        $ul.empty();
+                        for (index in helpList) {
+                            $ul.append($('<li>').text(helpList[index]));
+                        }
+                        $ul.children('li').click(function() {
+                            $input.val($(this).text());
+                            $input.next().click();
+                        })
+                    }
+
+                    $('#search_autocomplete').show();
+                }
+            })
+        }
+    });
 });
 

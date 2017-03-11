@@ -28,9 +28,21 @@ class CatalogController extends \site\base\Controller {
         ]);
     }
 
-    public function actionSearch($keyword){
+    public function actionSearch($keyword, $autocomplete = false){
         if(!empty($keyword)){
             $models = Product::find()->andWhere(['LIKE', 'name', trim($keyword)]);
+
+            if ($autocomplete) {
+                $result = [];
+                foreach ($models->all() as $model) {
+                    $result[] = $model->name;
+                }
+
+                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+                return $result;
+            }
+
             $pagination = new Pagination([
                 'defaultPageSize' => 6,
                 'totalCount' => $models->count()

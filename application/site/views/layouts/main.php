@@ -77,8 +77,11 @@ AppAsset::register($this);
 
                 <div id="templatemo_search">
                     <form action="<?= Url::to(['catalog/search'])?>" method="get">
-                        <input type="text"  name="keyword" id="keyword" title="keyword"  class="txt_field" />
-                        <input type="submit" name="Search" value=" " alt="Search" id="searchbutton" title="Search" class="sub_btn"  />
+                        <input type="text"  name="keyword" id="keyword" title="keyword"  class="txt_field" autocomplete="off" />
+                        <input type="submit" name="" value=" " alt="Search" id="searchbutton" title="Search" class="sub_btn"  />
+                        <div id="search_autocomplete">
+                            <ul></ul>
+                        </div>
                     </form>
                 </div>
             </div>
