@@ -19,4 +19,6 @@ $this->title = Yii::$app->name;
  </div>
 <?php } ?>
 
-<?= LinkPager::widget(['pagination'=>$pagination])?>
+<?php if ($pagination) { ?>
+    <?= LinkPager::widget(['pagination'=>$pagination])?>
+<?php } ?>
