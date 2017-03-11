@@ -27,7 +27,7 @@ $this->title = Yii::$app->name;
         <p><?= $product->description ?></p>
         <p class="product_price">$ <?= $product->price ?></p>
         <a href="<?= Url::to(['cart/add', 'productId'=>$product->id , 'quantity' => 1])?>" class="addtocart"></a>
-        <a href="<?= Url::to(['site/detail', 'id'=>$product->id])?>" class="detail"></a>
+        <a href="<?= Url::to(['product/detail', 'id'=>$product->id])?>" class="detail"></a>
     </div>
 <?php } ?>
 

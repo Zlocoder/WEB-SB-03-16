@@ -3,36 +3,44 @@
 namespace site\controllers;
 
 use app\models\Product;
+use yii\data\Pagination;
 
 class CatalogController extends \site\base\Controller {
-    public function actionProducts($category = null) { // Автоматическая привязка гет параметра
-        //\Yii::$app->request->get('category'); - получаем гет параметр category
-        // \Yii::$app->request->get(); - получаем все гет параметры
+    public function actionProducts($id = null){
+        $models = (empty($id))? Product::find(): Product::find()->andWhere(['categoryId'=>$id]);
+        $pagination = new Pagination([
+            'defaultPageSize' => 6,
+            'totalCount' => $models->count()
+        ]);
 
-        $products = Product::find()->orderBy(['createdAt' => SORT_DESC])->limit(12);
-
-        if ($category) {
-            $products->andWhere(['categoryId' => $category]);
-        }
-
-        return $this->render('/products', [
-            'products' => $products->all()
+        return $this->render('products', [
+            'products' => $models->offset($pagination->offset)->limit($pagination->limit)->all(),
+            'pagination' => $pagination
         ]);
     }
 
-    public function actionProductDetails($productId) {
-        $product = Product::findOne($productId);
+    public function actionDetail($id){
+        $product = Product::findOne($id);
 
-        return $this->render('/productdetails', [
-            'product' => $product,
-            'relateds' => Product::find()->limit(3)
-                ->orderBy('createdAt')
-                ->andWhere(['categoryId' => $product->categoryId])
-                ->andFilterCompare('id', $productId, $defaultOperator = '<>')
-//                ->andWhere(['id' => $productId])
-                ->all()
-
+        return $this->render('detail', [
+            'product'=>$product,
+            'productSimilar'=>Product::find()->andWhere(['categoryId'=>$product->categoryId])->andWhere(['!=', 'id', $id])->limit(3)->all()
         ]);
+    }
 
+    public function actionSearch($keyword){
+        if(!empty($keyword)){
+            $models = Product::find()->andWhere(['LIKE', 'name', trim($keyword)]);
+            $pagination = new Pagination([
+                'defaultPageSize' => 6,
+                'totalCount' => $models->count()
+            ]);
+            return $this->render('products', [
+                'products' => $models->offset($pagination->offset)->limit($pagination->limit)->all(),
+                'pagination' => $pagination
+            ]);
+        }else{
+            return $this->redirect(['site/products']);
+        }
     }
 }

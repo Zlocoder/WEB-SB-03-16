@@ -21,7 +21,7 @@ $this->title = 'My cart';
     <?php foreach ($cart->getProductsList() as $product) { ?>
         <tr>
             <td><img src="<?= $product->getImageUrl([100, 100]) ?>" alt="<?= $product->name ?>"></td>
-            <td><a href="<?= Url::to(['site/detail', 'productId' => $product->id]) ?>" rel="nofollow"><?= $product->name ?></a></td>
+            <td><a href="<?= Url::to(['product/detail', 'productId' => $product->id]) ?>" rel="nofollow"><?= $product->name ?></a></td>
             <td align="center">
                 <input class="cart-quantity" data-url="<?= Url::to(['cart/quantity', 'productId' => $product->id]) ?>" type="text" value="<?= $cart->getProductCount($product->id) ?>" style="width: 20px; text-align: right">
             </td>
