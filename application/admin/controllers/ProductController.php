@@ -66,6 +66,7 @@ class ProductController extends \admin\base\Controller
                 'price' => $product->price,
                 'description' => $product->description,
                 'image' => $product->image ? $product->getImageUrl([200,200]) : '',
+                'bestseller' => $product->bestseller
             ]);
 
             if (\Yii::$app->request->isPost) {

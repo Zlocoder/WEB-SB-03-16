@@ -78,6 +78,7 @@ class CartController extends \site\base\Controller {
         if(\Yii::$app->request->isPost){
             $model->load(\Yii::$app->request->post());
             if($model->run()){
+                \Yii::$app->session->remove('cart');
                 return $this->goHome();
             }
         }

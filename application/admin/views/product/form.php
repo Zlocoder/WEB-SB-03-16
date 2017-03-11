@@ -49,6 +49,8 @@ use yii\helpers\Url;
 
         <?= $form->field($model, 'description') ?>
 
+        <?= $form->field($model, 'bestseller')->checkbox() ?>
+
         <div class="form-group">
             <button type="submit" class="btn btn-primary pull-right"><?= $model->scenario == 'update'? 'edit': 'save'; ?></button>
         </div>

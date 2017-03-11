@@ -32,7 +32,8 @@ class Product extends \app\base\ActiveRecord
             ['price', 'number'],
             ['image', 'string', 'min'=>16, 'max'=>16],
             ['description', 'string', 'min'=>10],
-            [['createdAt', 'updatedAt'], 'safe']
+            [['createdAt', 'updatedAt'], 'safe'],
+            ['bestseller', 'boolean']
         ];
     }
 
@@ -44,9 +45,12 @@ class Product extends \app\base\ActiveRecord
             'price' => 'Price',
             'description' => 'Description',
             'createdAt' => 'Date created',
-            'updatedAt' => 'Date updated'
+            'updatedAt' => 'Date updated',
+            'bestseller' => 'Bestseller'
         ];
     }
+
+
     
     public function getCategory(){
         return $this->hasOne(Category::className(), ['id' => 'categoryId']);

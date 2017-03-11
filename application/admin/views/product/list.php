@@ -33,6 +33,17 @@ use yii\helpers\Html;
         'createdAt',
         'updatedAt',
         [
+                'attribute' => 'bestseller',
+                'value' => function($product){
+                    if ($product->bestseller){
+                        return "bestseller";
+                    }else{
+                        return "";
+                    }
+                }
+
+        ],
+        [
             'class' => 'yii\grid\ActionColumn',
             'template' => '{update} {delete}'
         ]
