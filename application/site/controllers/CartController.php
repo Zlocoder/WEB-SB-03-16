@@ -7,13 +7,12 @@ use app\models\Product;
 use site\models\forms\OrderForm;
 
 class CartController extends \site\base\Controller {
-    public $layout = false;
-
     public function actionIndex() {
         return $this->render('cart', ['cart' => new Cart()]);
     }
 
     public function actionAdd($productId, $quantity) {
+        $this->layout = false;
         if ($product = Product::findOne($productId)) {
             $cart = new Cart();
             $cart->add($productId, $quantity);
@@ -26,6 +25,7 @@ class CartController extends \site\base\Controller {
     }
 
     public function actionQuantity($productId, $quantity) {
+        $this->layout = false;
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         if ($product = Product::findOne($productId)) {
@@ -47,6 +47,7 @@ class CartController extends \site\base\Controller {
     }
 
     public function actionDelete($productId) {
+        $this->layout = false;
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         if (Product::findOne($productId)) {
