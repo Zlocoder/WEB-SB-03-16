@@ -73,8 +73,17 @@ class CartController extends \site\base\Controller {
         if(\Yii::$app->request->isPost){
             $model->load(\Yii::$app->request->post());
             if($model->run()){
-                \Yii::$app->session->remove('cart');
-                return $this->goHome();
+                $payment = \Yii::$app->onpay->createPayment([
+                    'price' => $model->order->sum,
+                    'pay_for' => (string) $model->order->id,
+                ]);
+
+                $url = $payment->url;
+
+                if ($url) {
+                    \Yii::$app->session->remove('cart');
+                    return $this->redirect($url);
+                }
             }
         }
 
