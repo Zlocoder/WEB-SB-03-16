@@ -39,4 +39,20 @@ class SiteController extends \site\base\Controller {
 
         return $this->goHome();
     }
+
+    public function actionRegistration() {
+        $formModel = new \site\models\forms\Registration();
+
+        if (\Yii::$app->request->isPost) {
+            $formModel->load(\Yii::$app->request->post(), '');
+
+            if ($formModel->run()) {
+                return $this->goHome();
+            }
+        }
+
+        return $this->render('/registration', [
+            'model' => $formModel
+        ]);
+    }
 }

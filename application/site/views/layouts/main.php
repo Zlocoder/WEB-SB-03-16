@@ -35,11 +35,13 @@ AppAsset::register($this);
                         <a href="#" id="colProduct">My Cart</a> |
                         <a href="#">Checkout</a> |
                         <?php if(\Yii::$app->user->isGuest){?>
-                            <a href="<?= Url::to(['site/login'])?>">Log In</a></p>
+                            <a href="<?= Url::to(['site/login'])?>">Log In</a> |
+                            <a href="<?= Url::to(['site/registration'])?>">Registration</a>
                         <?php }else{ ?>
                             <a href="#">My Account (<?= \Yii::$app->user->identity->login ?>)</a>
                             <a href="<?= Url::to(['site/logout']) ?>">Logout</a>
                         <?php } ?>
+                    </p>
                     <p>
                         Shopping Cart: <strong id="cart-count"><?= $this->params['cartQuantity'] ?>
                             items</strong> ( <a href="<?= Url::to(['cart/index']) ?>">Show Cart</a> )
