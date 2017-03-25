@@ -63,8 +63,8 @@ $config = [
         ],
         'onpay' => [
             'class' => 'ejen\payment\Onpay',
-            'secret_key' => 'cpgt7zgoUjB',
-            'username' => 'kavale3g_beget_tech',
+            'secret_key' => 'EQnmS8XR1Ta',
+            'username' => 'valentkv_beget_tech',
             'url_success' => ['site/index'],
             'url_fail' => ['site/index']
         ]

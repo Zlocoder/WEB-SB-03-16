@@ -17,6 +17,8 @@ class OrderForm extends \yii\base\Model
     public $email;
     public $phone;
     public $address;
+
+    private $_order;
     
     public function rules()
     {
@@ -49,11 +51,17 @@ class OrderForm extends \yii\base\Model
             $order->address = $this->address;
             $order->sum = $cart->getProductsTotal();
             $order->qty = $cart->getProductsCount();
+            $order->status = 'created';
+            $this->_order = $order;
             if($order->save()){
                 return true;
             }else{
                 return false;
             }
         }
+    }
+
+    public function getOrder() {
+        return $this->_order;
     }
 }

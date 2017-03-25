@@ -15,12 +15,13 @@ class Order extends \app\base\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'email', 'phone', 'address'], 'required'],
+            [['name', 'email', 'phone', 'address', 'status'], 'required'],
             [['qty'], 'integer'],
             [['sum'], 'number'],
             [['createdAt', 'updatedAt'], 'safe'],
             [['name', 'phone'], 'string', 'max' => 100],
             [['email', 'address'], 'string', 'max' => 255],
+            [['status'], 'string', 'max' => 25]
         ];
     }
 

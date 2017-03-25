@@ -3,6 +3,7 @@
 namespace site\controllers;
 
 use ejen\payment\onpay\ApiAction;
+use app\models\Order;
 
 class OnpayController extends \yii\web\Controller {
     public function actions() {
@@ -16,18 +17,40 @@ class OnpayController extends \yii\web\Controller {
     }
 
     public function checkCallback($request, $response) {
-        $currency = 'RUR';
+        $order = Order::findOne($request['pay_for']);
 
-        if ($request->order_currency != $currency)
-        {
+        if (!$order) {
             $response->code = 3;
-            return false;
+            $response->comment = 'Заказ не найден';
+            return;
         }
 
-        return true;
+        if (!$order->status == 'payed') {
+            $response->code = 3;
+            $response->comment = 'Заказ уже оплачен';
+        }
     }
 
-    public function payCallback() {
-        
+    public function payCallback($request, $response) {
+        $order = Order::findOne($request['pay_for']);
+
+        if (!$order) {
+            $response->code = 3;
+            $response->comment = 'Заказ не найден';
+            return;
+        }
+
+        if (!$order->status == 'payed') {
+            $response->code = 3;
+            $response->comment = 'Заказ уже оплачен';
+        }
+
+        $amount1 = (float) $order->sum;
+        $amount2 = (float) $request->amount;
+
+        if ($amount1 != $amount2) {
+            $response->code = 3;
+            $response->comment = 'Сумма оплаты не совпадает с суммой заказа';
+        }
     }
 }
