@@ -28,7 +28,11 @@ class OnpayController extends \yii\web\Controller {
         if (!$order->status == 'payed') {
             $response->code = 3;
             $response->comment = 'Заказ уже оплачен';
+            return;
         }
+
+        $response->code = 0;
+        $response->comment = 'OK';
     }
 
     public function payCallback($request, $response) {
@@ -43,6 +47,7 @@ class OnpayController extends \yii\web\Controller {
         if (!$order->status == 'payed') {
             $response->code = 3;
             $response->comment = 'Заказ уже оплачен';
+            return;
         }
 
         $amount1 = (float) $order->sum;
@@ -51,6 +56,10 @@ class OnpayController extends \yii\web\Controller {
         if ($amount1 != $amount2) {
             $response->code = 3;
             $response->comment = 'Сумма оплаты не совпадает с суммой заказа';
+            return;
         }
+
+        $response->code = 0;
+        $response->comment = 'OK';
     }
 }
