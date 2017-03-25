@@ -61,5 +61,8 @@ class OnpayController extends \yii\web\Controller {
 
         $response->code = 0;
         $response->comment = 'OK';
+
+        $order->status = 'payed';
+        $order->save();
     }
 }
