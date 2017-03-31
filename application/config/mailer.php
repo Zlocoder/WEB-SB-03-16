@@ -3,6 +3,7 @@ if ($_SERVER['HTTP_HOST'] == 'localhost') {
     return [
         'class' => 'yii\swiftmailer\Mailer',
         'useFileTransport' => false,
+        //'htmlLayout' => 'specific html layout',
         'transport' => [
             'class' => 'Swift_SmtpTransport',
             'host' => 'smtp.gmail.com',

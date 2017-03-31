@@ -9,8 +9,6 @@
 namespace app\models;
 
 
-use yii\web\IdentityInterface;
-
 class User extends \app\base\ActiveRecord implements \yii\web\IdentityInterface
 {
     public static function tableName()
@@ -21,9 +19,15 @@ class User extends \app\base\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['login', 'password'], 'required'],
-            ['login', 'string', 'max' => 100, 'min' => 3],
-            ['password', 'string', 'min' => 60, 'max' => 60]
+            [['email', 'login', 'password'], 'required'],
+            [['email','login'], 'string', 'max' => 100, 'min' => 3],
+            ['password', 'string', 'min' => 60, 'max' => 60],
+            ['email', 'email'],
+
+            //[['activation'], 'boolean', 'strict' => true, 'trueValue' => 1, 'falseValue' => 0],
+            [['activation'], 'boolean'],
+
+            [['login', 'email'], 'unique'],
         ];
     }
 

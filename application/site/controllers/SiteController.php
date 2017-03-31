@@ -4,6 +4,8 @@ namespace site\controllers;
 
 use app\models\Product;
 use site\models\forms\UserLogin;
+use app\models\User;
+use yii\base\Exception;
 
 class SiteController extends \site\base\Controller {
     public function actionIndex() {
@@ -54,5 +56,18 @@ class SiteController extends \site\base\Controller {
         return $this->render('/registration', [
             'model' => $formModel
         ]);
+    }
+
+    public function actionActivate($code) {
+        $expr = new \yii\db\Expression("md5(`email`) = '$code'");
+
+        if ($user = User::find()->where($expr)->one()) {
+            $user->activation = 1;
+            $user->save();
+        } else {
+            \Yii::$app->session->setFlash('error', 'Не найден пользователь соостветствующий активационному коду');
+        }
+
+        return $this->goHome();
     }
 }
